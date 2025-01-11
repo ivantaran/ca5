@@ -8,7 +8,8 @@
             "type": "shell",
             "command": "cmake",
             "args": [
-                "-Bbuild"
+                "-Bbuild",
+                "-DCMAKE_BUILD_TYPE=Debug"
             ],
             "group": {
                 "kind": "build",
@@ -22,6 +23,21 @@
             "args": [
                 "--build",
                 "build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "clean"
             ],
             "group": {
                 "kind": "build",
