@@ -2,5 +2,8 @@
     "C_Cpp.default.includePath": [
         "/usr/include/x86_64-linux-gnu/qt5/**",
         "build/ca5_autogen/include"
-    ]
+    ],
+    "files.associations": {
+        "qwidget": "cpp"
+    }
 }
