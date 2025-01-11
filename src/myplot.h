@@ -9,6 +9,8 @@ public:
     MyPlot(QWidget *parent = nullptr);
     virtual ~MyPlot();
 
+protected:
+    void paintEvent(QPaintEvent *event);
 signals:
 private:
 };
