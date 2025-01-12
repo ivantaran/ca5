@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     // std::cout << std::put_time(&p.tm, "%c\t") << p.v[2] << '\n';
     // }
     QApplication app(argc, argv);
-    MyPlot window;
+    MyPlot window(&reader);
     window.show();
     return app.exec();
 }
