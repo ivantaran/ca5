@@ -21,15 +21,17 @@ std::vector<MyReader::MyPoint> MyReader::readDataFromFile(const std::string &fil
     std::chrono::system_clock::time_point tp;
     std::ifstream file(fileName);
     std::vector<MyPoint> data;
+    double ms;
+    std::tm tm{};
     const char *datePattern = "%Y.%m.%d %H:%M:%S";
-    // double v[DataWidth];
 
     while (std::getline(file, s)) {
         std::istringstream ss(s);
         MyPoint p;
-        ss >> std::get_time(&p.tm, datePattern) >> p.ms >> p.v[0] >> p.v[1] >> p.v[2];
+        ss >> std::get_time(&tm, datePattern) >> ms >> p.v[0] >> p.v[1] >> p.v[2];
         if (!ss.fail()) {
-            // std::cout << std::put_time(&p.tm, "%c\t") << p.v[2] << '\n';
+            p.tms = std::mktime(&tm) * 1000;
+            p.tms += static_cast<time_t>(ms * 1000);
             data.push_back(p);
         }
     }
@@ -48,10 +50,27 @@ std::tuple<double, double> MyReader::dataLimits() {
     return std::make_tuple(mm.first->v[0], mm.second->v[0]);
 }
 
-const std::vector<double> &MyReader::data(int width, int height) {
-    m_yData.clear();
+std::tuple<const std::vector<double> &, const std::vector<double> &> MyReader::data(int width,
+                                                                                    int height) {
+    m_yMaxData.clear();
+    m_yMinData.clear();
+    double vmax = 0.0;
+    double vmin = 0.0;
+    int i = 0;
+    int i_val = 1;
     for (const auto &p : m_data) {
-        m_yData.push_back(p.v[2] + 100);
+        if (i % 32 == 0) {
+            if (i != 0) {
+                m_yMaxData.push_back((vmax - 32868) * 0.1 + height / 2);
+                m_yMinData.push_back((vmin - 32868) * 0.1 + height / 2);
+            }
+            vmax = p.v[i_val];
+            vmin = p.v[i_val];
+        } else {
+            vmax = std::max(vmax, p.v[i_val]);
+            vmin = std::min(vmin, p.v[i_val]);
+        }
+        i++;
     }
-    return m_yData;
+    return std::forward_as_tuple(m_yMaxData, m_yMinData);
 }

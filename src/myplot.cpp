@@ -14,15 +14,26 @@ void MyPlot::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(0, 0, width(), height(), Qt::black);
-    const auto data = m_reader->data(width(), height());
+    auto data = m_reader->data(width(), height());
+    const std::vector<double> &maxData = std::get<0>(data);
+    const std::vector<double> &minData = std::get<1>(data);
     int i = 0;
-    double v0 = 0.0;
+    double v0 = maxData.front();
     QPen pen(Qt::yellow);
     p.setPen(pen);
-    for (const double &v : data) {
-        p.drawLine(i, v0, i + 1, v);
+    for (auto pv = std::next(maxData.begin()); pv != maxData.end(); ++pv) {
+        p.drawLine(i, v0, i + 1, *pv);
         i++;
-        v0 = v;
+        v0 = *pv;
+        if (i >= width()) {
+            break;
+        }
+    }
+    v0 = minData.front();
+    for (auto pv = std::next(minData.begin()); pv != minData.end(); ++pv) {
+        p.drawLine(i, v0, i + 1, *pv);
+        i++;
+        v0 = *pv;
         if (i >= width()) {
             break;
         }
