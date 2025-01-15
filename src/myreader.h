@@ -14,7 +14,6 @@ class MyReader {
 public:
     MyReader(const std::string &fileName);
     virtual ~MyReader();
-    std::tuple<double, double> dataLimits();
     std::tuple<const std::vector<double> &, const std::vector<double> &> data(int width,
                                                                               int height);
 
@@ -33,7 +32,8 @@ private:
     double m_maxValue[DataWidth];
     double m_minTime;
     double m_maxTime;
-    std::vector<MyPoint> readDataFromFile(const std::string &fileName);
+    void readDataFromFile(const std::string &fileName);
+    void updateDataLimits();
 };
 
 #endif /* MYREADER_H */
