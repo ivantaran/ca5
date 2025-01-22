@@ -18,18 +18,16 @@ public:
                                                                               int height);
 
 private:
-    static const int DataWidth = 3;
-
     struct MyPoint {
-        time_t tms;
-        double v[DataWidth];
+        time_t t_ms;
+        double value;
     };
 
     std::vector<MyPoint> m_data;
     std::vector<double> m_yMaxData;
     std::vector<double> m_yMinData;
-    double m_minValue[DataWidth];
-    double m_maxValue[DataWidth];
+    double m_minValue;
+    double m_maxValue;
     double m_minTime;
     double m_maxTime;
     void readDataFromFile(const std::string &fileName);
