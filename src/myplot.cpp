@@ -15,21 +15,13 @@ void MyPlot::paintEvent(QPaintEvent *event) {
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(0, 0, width(), height(), Qt::black);
     const auto &data = m_reader->data(width(), height());
-    int x = 0;
-    auto y = data.front().at(1);
     QPen pen(Qt::yellow);
+    pen.setWidthF(0.5);
     p.setPen(pen);
+    auto p0 = &data.front();
     for (auto pd = std::next(data.begin()); pd != data.end(); ++pd) {
-        p.drawLine(x, y, pd->at(0), pd->at(1));
-        x = pd->at(0);
-        y = pd->at(1);
-    }
-
-    y = data.front().at(2);
-    x = 0;
-    for (auto pd = std::next(data.begin()); pd != data.end(); ++pd) {
-        p.drawLine(x, y, pd->at(0), pd->at(2));
-        x = pd->at(0);
-        y = pd->at(2);
+        p.drawLine(p0->at(0), p0->at(1), pd->at(0), pd->at(1));
+        p.drawLine(p0->at(0), p0->at(2), pd->at(0), pd->at(2));
+        p0 = &(*pd);
     }
 }
