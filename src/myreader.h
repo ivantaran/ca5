@@ -1,21 +1,21 @@
 #ifndef MYREADER_H
 #define MYREADER_H
 
-#include <chrono>
+#include <array>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <tuple>
 #include <vector>
+
+using myarray_t = std::vector<std::array<long, 3>>;
 
 class MyReader {
 public:
     MyReader(const std::string &fileName);
     virtual ~MyReader();
-    std::tuple<const std::vector<double> &, const std::vector<double> &> data(int width,
-                                                                              int height);
+    const myarray_t &data(int width, int height);
 
 private:
     struct MyPoint {
@@ -24,12 +24,11 @@ private:
     };
 
     std::vector<MyPoint> m_data;
-    std::vector<double> m_yMaxData;
-    std::vector<double> m_yMinData;
+    myarray_t m_plotData;
     double m_minValue;
     double m_maxValue;
-    double m_minTime;
-    double m_maxTime;
+    time_t m_minTime;
+    time_t m_maxTime;
     void readDataFromFile(const std::string &fileName);
     void updateDataLimits();
 };

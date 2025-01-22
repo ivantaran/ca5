@@ -14,28 +14,22 @@ void MyPlot::paintEvent(QPaintEvent *event) {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(0, 0, width(), height(), Qt::black);
-    auto data = m_reader->data(width(), height());
-    const std::vector<double> &maxData = std::get<0>(data);
-    const std::vector<double> &minData = std::get<1>(data);
-    int i = 0;
-    double v0 = maxData.front();
+    const auto &data = m_reader->data(width(), height());
+    int x = 0;
+    auto y = data.front().at(1);
     QPen pen(Qt::yellow);
     p.setPen(pen);
-    for (auto pv = std::next(maxData.begin()); pv != maxData.end(); ++pv) {
-        p.drawLine(i, v0, i + 1, *pv);
-        i++;
-        v0 = *pv;
-        if (i >= width()) {
-            break;
-        }
+    for (auto pd = std::next(data.begin()); pd != data.end(); ++pd) {
+        p.drawLine(x, y, pd->at(0), pd->at(1));
+        x = pd->at(0);
+        y = pd->at(1);
     }
-    v0 = minData.front();
-    for (auto pv = std::next(minData.begin()); pv != minData.end(); ++pv) {
-        p.drawLine(i, v0, i + 1, *pv);
-        i++;
-        v0 = *pv;
-        if (i >= width()) {
-            break;
-        }
+
+    y = data.front().at(2);
+    x = 0;
+    for (auto pd = std::next(data.begin()); pd != data.end(); ++pd) {
+        p.drawLine(x, y, pd->at(0), pd->at(2));
+        x = pd->at(0);
+        y = pd->at(2);
     }
 }
