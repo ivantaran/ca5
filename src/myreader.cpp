@@ -58,25 +58,40 @@ const myarray_t &MyReader::data(int width, int height) {
     double valueHalf = 0.5 * (m_maxValue + m_minValue);
     double timeRange = m_maxTime - m_minTime;
     double timeHalf = 0.5 * (m_maxTime + m_minTime);
-    time_t timeStep = (timeRange > width) ? timeRange / width : 1;
+    time_t timeStep = (timeRange > width) ? timeRange / width + 0.5 : 1;
     time_t t = m_minTime + timeStep;
     auto last = &m_data.back();
-
     for (const auto &p : m_data) {
+        vmax = std::max(vmax, p.value);
+        vmin = std::min(vmin, p.value);
         if (p.t_ms > t || &p == last) {
             std::array<long, 3> d = {
                 static_cast<long>((p.t_ms - m_minTime) / timeRange * width),
                 static_cast<long>((vmax - valueHalf) / valueRange * height + height * 0.5),
                 static_cast<long>((vmin - valueHalf) / valueRange * height + height * 0.5),
             };
+            // if (m_plotData.size()) {
+            //     int delta = d.at(0) - m_plotData.back().at(0);
+            //     std::cout << delta << ' ';
+            // }
             m_plotData.push_back(d);
             vmax = p.value;
             vmin = p.value;
             t += timeStep;
         } else {
-            vmax = std::max(vmax, p.value);
-            vmin = std::min(vmin, p.value);
+            // vmax = std::max(vmax, p.value);
+            // vmin = std::min(vmin, p.value);
+            // if (m_plotData.size()) {
+            //     std::array<long, 3> d = {
+            //         static_cast<long>((p.t_ms - m_minTime) / timeRange * width),
+            //         static_cast<long>((vmax - valueHalf) / valueRange * height + height * 0.5),
+            //         static_cast<long>((vmin - valueHalf) / valueRange * height + height * 0.5),
+            //     };
+            //     int delta = d.at(0) - m_plotData.back().at(0);
+            //     std::cout << delta << ' ';
+            // }
         }
     }
+    // std::cout << m_plotData.size() << '\n';
     return m_plotData;
 }
