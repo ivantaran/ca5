@@ -1,4 +1,5 @@
 #include "myreader.h"
+#include <limits>
 
 MyReader::MyReader(const std::string &fileName) {
     m_minValue = 0.0;
@@ -64,34 +65,18 @@ const myarray_t &MyReader::data(int width, int height) {
     for (const auto &p : m_data) {
         vmax = std::max(vmax, p.value);
         vmin = std::min(vmin, p.value);
-        if (p.t_ms > t || &p == last) {
+        if (p.t_ms >= t || &p == last) {
             std::array<long, 3> d = {
                 static_cast<long>((p.t_ms - m_minTime) / timeRange * width),
-                static_cast<long>((vmax - valueHalf) / valueRange * height + height * 0.5),
-                static_cast<long>((vmin - valueHalf) / valueRange * height + height * 0.5),
+                static_cast<long>((valueHalf - vmax) / valueRange * height + height * 0.5),
+                static_cast<long>((valueHalf - vmin) / valueRange * height + height * 0.5),
             };
-            // if (m_plotData.size()) {
-            //     int delta = d.at(0) - m_plotData.back().at(0);
-            //     std::cout << delta << ' ';
-            // }
             m_plotData.push_back(d);
-            vmax = p.value;
-            vmin = p.value;
+            auto np = std::next(&p);
+            vmax = np->value; //-std::numeric_limits<double>::max();
+            vmin = np->value; //+std::numeric_limits<double>::max();
             t += timeStep;
-        } else {
-            // vmax = std::max(vmax, p.value);
-            // vmin = std::min(vmin, p.value);
-            // if (m_plotData.size()) {
-            //     std::array<long, 3> d = {
-            //         static_cast<long>((p.t_ms - m_minTime) / timeRange * width),
-            //         static_cast<long>((vmax - valueHalf) / valueRange * height + height * 0.5),
-            //         static_cast<long>((vmin - valueHalf) / valueRange * height + height * 0.5),
-            //     };
-            //     int delta = d.at(0) - m_plotData.back().at(0);
-            //     std::cout << delta << ' ';
-            // }
         }
     }
-    // std::cout << m_plotData.size() << '\n';
     return m_plotData;
 }

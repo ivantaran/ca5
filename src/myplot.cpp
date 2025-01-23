@@ -23,24 +23,17 @@ void MyPlot::paintEvent(QPaintEvent *event) {
     p.fillRect(0, 0, width(), height(), Qt::black);
     const auto &data = m_reader->data(width(), height());
     QPen pen(Qt::yellow);
-    QPen pen1(Qt::red);
+    QPen pen1(Qt::darkYellow);
     QBrush brush(QColor(255, 255, 0, 32));
     pen.setWidthF(0.5);
     pen1.setWidthF(0.5);
     p.setPen(pen);
-    // auto p0 = &data.front();
-    // for (auto pd = std::next(data.begin()); pd != data.end(); ++pd) {
-    //     p.setPen(pen);
-    //     p.drawLine(p0->at(0), p0->at(1), pd->at(0), pd->at(1));
-    //     p.setPen(pen1);
-    //     p.drawLine(p0->at(0), p0->at(2), pd->at(0), pd->at(2));
-    //     p0 = &(*pd);
-    // }
     const auto &p0 = data.front();
     path.moveTo(p0.at(0), p0.at(1));
     for (const auto &p : data) {
         path.lineTo(p.at(0), p.at(1));
     }
+    // p.setPen(pen1);
     for (auto pd = data.rbegin(); pd != data.rend(); ++pd) {
         path.lineTo(pd->at(0), pd->at(2));
     }
