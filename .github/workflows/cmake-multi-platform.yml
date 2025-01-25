@@ -58,7 +58,7 @@ jobs:
       uses: jurplel/install-qt-action@v4
       with:
         tools: 'tools_ifw'
-        add-tools-to-path: true
+        add-tools-to-path: 'true'
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -89,5 +89,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: qt-app-build
+        name: qt-app-build-${{ matrix.os }}-${{ matrix.compiler }}
         path: build/
