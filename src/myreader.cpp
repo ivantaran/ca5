@@ -60,7 +60,7 @@ void MyReader::updateDataLimits() {
     }
 }
 
-const myarray_t &MyReader::data(int width, int height) {
+const myarray_t &MyReader::plotData(int x, int y, int width, int height) {
     m_plotData.clear();
     if (!m_data.size()) {
         return m_plotData;
@@ -78,9 +78,9 @@ const myarray_t &MyReader::data(int width, int height) {
         vmin = std::min(vmin, point.value);
         if (point.t_ms >= t || &point == last) {
             std::array<int64_t, 3> d = {
-                static_cast<int64_t>((point.t_ms - m_minTime) / timeRange * width),
-                static_cast<int64_t>((valueHalf - vmax) / valueRange * height + height * 0.5),
-                static_cast<int64_t>((valueHalf - vmin) / valueRange * height + height * 0.5),
+                static_cast<int64_t>((point.t_ms - m_minTime) / timeRange * width + x),
+                static_cast<int64_t>((valueHalf - vmax) / valueRange * height + height * 0.5 + y),
+                static_cast<int64_t>((valueHalf - vmin) / valueRange * height + height * 0.5 + y),
             };
             m_plotData.push_back(d);
             auto np = std::next(&point);

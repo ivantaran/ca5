@@ -15,18 +15,19 @@ void MyPlot::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
 
     QPainter painter(this);
-    // QRect rect(100, 100, width() - 200, height() - 200);
-    // painter.setClipRegion(rect);
-    // painter.setClipping(false);
+    int w = PLOT_SCALE * width();
+    int h = PLOT_SCALE * height();
+    int x = 0.5 * (width() - w);
+    int y = 0.5 * (height() - h);
+    QRect rect(x, y, w, h);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.fillRect(0, 0, width(), height(), Qt::black);
-    QPen pen(Qt::yellow);
-    QPen pen1(Qt::darkYellow);
-    QBrush brush(QColor(255, 255, 0, 32));
-    pen.setWidthF(0.5);
-    pen1.setWidthF(0.5);
-    painter.setPen(pen);
-    const auto &data = m_reader->data(width(), height());
+    painter.fillRect(0, 0, width(), height(), BORDER_COLOR);
+    painter.fillRect(rect, Qt::black);
+    painter.setClipRegion(rect);
+    painter.setPen(MY_PEN1);
+    painter.drawLine(0, height() * 0.5, width(), height() * 0.5);
+    painter.setPen(MY_PEN);
+    const auto &data = m_reader->plotData(rect.x(), rect.y(), rect.width(), rect.height());
     if (data.size()) {
         const auto &p0 = data.front();
         QPainterPath path;
@@ -39,7 +40,8 @@ void MyPlot::paintEvent(QPaintEvent *event) {
         }
         path.lineTo(p0.at(0), p0.at(1));
         path.setFillRule(Qt::WindingFill);
-        painter.setBrush(brush);
+        painter.setBrush(MY_BRUSH);
         painter.drawPath(path);
     }
+    painter.setClipping(false);
 }

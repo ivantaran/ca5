@@ -15,7 +15,7 @@ class MyReader {
 public:
     MyReader(const std::string &fileName);
     virtual ~MyReader();
-    const myarray_t &data(int width, int height);
+    const myarray_t &plotData(int x, int y, int width, int height);
 
 private:
     struct __attribute__((aligned(16))) MyPoint {
