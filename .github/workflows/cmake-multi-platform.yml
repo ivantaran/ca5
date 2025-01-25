@@ -56,7 +56,9 @@ jobs:
     
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
-      
+      tools: 'tools_ifw'
+      add-tools-to-path: true
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -80,12 +82,8 @@ jobs:
     - name: Deploy Qt Application
       if: runner.os == 'Windows'
       run: |
-        # Path to Qt installation
-        $qtPath = "${{ env.Qt5_DIR }}"
-        # Path to windeployqt tool
-        $windeployqt = "$qtPath/bin/windeployqt.exe"
         # Run windeployqt to deploy the application
-        & $windeployqt --release --dir build/Release build/Release/ca5.exe
+        windeployqt --release --dir build/Release build/Release/ca5.exe
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
