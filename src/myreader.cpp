@@ -1,5 +1,7 @@
 #include "myreader.h"
-#include <limits>
+
+#include <iterator>
+// #include <limits>
 
 MyReader::MyReader(const std::string &fileName) {
     m_minValue = 0.0;
@@ -40,6 +42,13 @@ void MyReader::readDataFromFile(const std::string &fileName) {
 }
 
 void MyReader::updateDataLimits() {
+    if (!m_data.size()) {
+        m_minValue = 0.0;
+        m_maxValue = 0.0;
+        m_minTime = 0;
+        m_maxTime = 0;
+        return;
+    }
     m_maxValue = m_data.front().value;
     m_maxTime = m_data.front().t_ms;
     m_minTime = m_maxTime;
@@ -53,26 +62,28 @@ void MyReader::updateDataLimits() {
 
 const myarray_t &MyReader::data(int width, int height) {
     m_plotData.clear();
+    if (!m_data.size()) {
+        return m_plotData;
+    }
     double vmax = m_data.front().value;
     double vmin = vmax;
     double valueRange = m_maxValue - m_minValue;
     double valueHalf = 0.5 * (m_maxValue + m_minValue);
     double timeRange = m_maxTime - m_minTime;
-    double timeHalf = 0.5 * (m_maxTime + m_minTime);
     time_t timeStep = (timeRange > width) ? timeRange / width + 0.5 : 1;
     time_t t = m_minTime + timeStep;
     auto last = &m_data.back();
-    for (const auto &p : m_data) {
-        vmax = std::max(vmax, p.value);
-        vmin = std::min(vmin, p.value);
-        if (p.t_ms >= t || &p == last) {
-            std::array<long, 3> d = {
-                static_cast<long>((p.t_ms - m_minTime) / timeRange * width),
-                static_cast<long>((valueHalf - vmax) / valueRange * height + height * 0.5),
-                static_cast<long>((valueHalf - vmin) / valueRange * height + height * 0.5),
+    for (const auto &point : m_data) {
+        vmax = std::max(vmax, point.value);
+        vmin = std::min(vmin, point.value);
+        if (point.t_ms >= t || &point == last) {
+            std::array<int64_t, 3> d = {
+                static_cast<int64_t>((point.t_ms - m_minTime) / timeRange * width),
+                static_cast<int64_t>((valueHalf - vmax) / valueRange * height + height * 0.5),
+                static_cast<int64_t>((valueHalf - vmin) / valueRange * height + height * 0.5),
             };
             m_plotData.push_back(d);
-            auto np = std::next(&p);
+            auto np = std::next(&point);
             vmax = np->value; //-std::numeric_limits<double>::max();
             vmin = np->value; //+std::numeric_limits<double>::max();
             t += timeStep;

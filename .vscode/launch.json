@@ -9,9 +9,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/ca5",
-            "args": [],
+            "args": [
+                "data.txt"
+            ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/tests",
+            "cwd": "${workspaceFolder}/build",
             "preLaunchTask": "build",
             "environment": [
                 {

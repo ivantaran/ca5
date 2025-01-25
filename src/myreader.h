@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-using myarray_t = std::vector<std::array<long, 3>>;
+using myarray_t = std::vector<std::array<int64_t, 3>>;
 
 class MyReader {
 public:
@@ -18,7 +18,7 @@ public:
     const myarray_t &data(int width, int height);
 
 private:
-    struct MyPoint {
+    struct __attribute__((aligned(16))) MyPoint {
         time_t t_ms;
         double value;
     };
