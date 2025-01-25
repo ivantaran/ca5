@@ -18,7 +18,7 @@ public:
     const myarray_t &plotData(int x, int y, int width, int height);
 
 private:
-    struct __attribute__((aligned(16))) MyPoint {
+    struct MyPoint {
         time_t t_ms;
         double value;
     };
