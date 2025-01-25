@@ -89,5 +89,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: qt-app-build-${{ matrix.os }}-${{ matrix.compiler }}
+        name: qt-app-build-${{ matrix.os }}-${{ matrix.c_compiler }}
         path: build/
