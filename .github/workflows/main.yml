@@ -90,4 +90,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: qt-app-build-${{ matrix.os }}-${{ matrix.c_compiler }}
-        path: build/
+        path: |
+          build/${{ runner.os == 'Windows' && 'Release/' || 'ca5' }}
+          tests/data.txt
