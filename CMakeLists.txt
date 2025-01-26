@@ -31,3 +31,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} Qt5::Core)
 target_link_libraries(${PROJECT_NAME} Qt5::Gui)
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
+
+add_executable(test1 tests/test1.cpp src/myreader.cpp)
+target_include_directories(test1 PRIVATE src)
+enable_testing()
+add_test(test1 test1 ${PROJECT_SOURCE_DIR}/tests/data.csv)

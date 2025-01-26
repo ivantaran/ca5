@@ -91,3 +91,7 @@ const myarray_t &MyReader::plotData(int x, int y, int width, int height) {
     }
     return m_plotData;
 }
+
+size_t MyReader::dataSize() const {
+    return m_data.size();
+}

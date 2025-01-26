@@ -16,6 +16,7 @@ public:
     MyReader(const std::string &fileName);
     virtual ~MyReader();
     const myarray_t &plotData(int x, int y, int width, int height);
+    size_t dataSize() const;
 
 private:
     struct MyPoint {
