@@ -26,9 +26,9 @@ cmake --build build
 
 ## Usage
 
-Just open the data file using open file dialog box
-or
-use command line
+Just open the data file using open file dialog box \
+![ca5-opendialog](https://github.com/user-attachments/assets/6ca7ad4f-b197-41c6-afe7-5a190ff061e5) \
+or use command line
 
 ```bash
 ./ca5 tests/data.txt
