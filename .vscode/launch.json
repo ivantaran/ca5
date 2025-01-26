@@ -10,10 +10,10 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/ca5",
             "args": [
-                "data.txt"
+                "data.csv"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build",
+            "cwd": "${workspaceFolder}/tests",
             "preLaunchTask": "build",
             "environment": [
                 {

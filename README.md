@@ -4,4 +4,34 @@
 
 ![ca5-screenshot](https://github.com/user-attachments/assets/31ffb27c-57d3-49c7-bb22-4b623ccf35f2)
 
+## Releases
+
+[![Downloads](https://custom-icon-badges.demolab.com/badge/-Downloads-darkgreen?style=for-the-badge&logo=downloads&logoColor=white)](https://github.com/ivantaran/ca5/releases)
+
+## Building
+
+### Linux
+
+```bash
+cmake -B build -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+### Windows
+
+```bash
+cmake -B build -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+## Usage
+
+Just open the data file using open file dialog box
+or
+use command line
+
+```bash
+./ca5 tests/data.txt
+```
+
 ![Build status](https://github.com/ivantaran/ca5/actions/workflows/main.yml/badge.svg)
